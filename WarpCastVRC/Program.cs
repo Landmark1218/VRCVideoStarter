@@ -20,7 +20,6 @@ class VRCVideoStarter
 
     static string goHttpUrl = "https://github.com/codeskyblue/gohttpserver/releases/download/1.3.0/gohttpserver_1.3.0_windows_amd64.zip";
     static string cloudflaredMsiUrl = "https://sourceforge.net/projects/cloudflare-tunnel.mirror/files/2025.11.1/cloudflared-windows-amd64.msi/download";
-    // MediaMTXのダウンロードURL
     static string mediaMtxUrl = "https://github.com/bluenviron/mediamtx/releases/download/v1.9.0/mediamtx_v1.9.0_windows_amd64.zip";
 
     static string localAppPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "VRCVideoTools");
@@ -51,29 +50,19 @@ class VRCVideoStarter
 
         string mode = Console.ReadLine();
 
-        if (mode == "1")
-        {
-            await RunVideoMode();
-        }
-        else if (mode == "2")
-        {
-            await RunLiveMode();
-        }
+        if (mode == "1") await RunVideoMode();
+        else if (mode == "2") await RunLiveMode();
     }
 
-    // --- 動画モードのメイン処理 ---
     static async Task RunVideoMode()
     {
         Console.WriteLine("\n動画フォルダのパスを入力してください:");
         string videoPath = Console.ReadLine()?.Replace("\"", "") ?? "";
 
-        if (!Directory.Exists(videoPath))
-        {
-            Console.WriteLine("フォルダが見つかりません。"); return;
-        }
+        if (!Directory.Exists(videoPath)) { Console.WriteLine("フォルダが見つかりません。"); return; }
 
         _goHttpProcess = StartGoHttpServer(videoPath);
-        _cloudflaredProcess = StartCloudflareTunnel(8003); // 動画は8003
+        _cloudflaredProcess = StartCloudflareTunnel(8003);
 
         Console.WriteLine("URL取得中...");
         while (string.IsNullOrEmpty(cloudflareUrl)) await Task.Delay(500);
@@ -81,11 +70,10 @@ class VRCVideoStarter
         ShowVideoMenu(videoPath);
     }
 
-    // --- ライブ配信モードのメイン処理 ---
     static async Task RunLiveMode()
     {
         _mediaMtxProcess = StartMediaMtx();
-        _cloudflaredProcess = StartCloudflareTunnel(8888); // MediaMTX(HLS)は8888
+        _cloudflaredProcess = StartCloudflareTunnel(8888);
 
         Console.WriteLine("\n[Live Mode] 配信環境を構築中...");
         while (string.IsNullOrEmpty(cloudflareUrl)) await Task.Delay(500);
@@ -107,9 +95,7 @@ class VRCVideoStarter
         Console.ResetColor();
         Console.WriteLine("--------------------------------------------------");
         Console.WriteLine("\nOBSで配信を開始すると、VRChatで視聴可能になります。");
-        Console.WriteLine("終了するにはこのウィンドウを閉じてください。");
-
-        while (true) await Task.Delay(1000); // 待機
+        while (true) await Task.Delay(1000);
     }
 
     private static bool HandlerRoutine(uint type)
@@ -127,6 +113,45 @@ class VRCVideoStarter
             if (_mediaMtxProcess != null && !_mediaMtxProcess.HasExited) _mediaMtxProcess.Kill();
         }
         catch { }
+    }
+    static string GetCloudflaredPath()
+    {
+        string prog64 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "cloudflared", "cloudflared.exe");
+        string prog86 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "cloudflared", "cloudflared.exe");
+
+        if (File.Exists(prog64)) return prog64;
+        if (File.Exists(prog86)) return prog86;
+
+        return "cloudflared";
+    }
+
+    static Process StartCloudflareTunnel(int port)
+    {
+        var process = new Process
+        {
+            StartInfo = new ProcessStartInfo
+            {
+                FileName = GetCloudflaredPath(),
+                Arguments = $"tunnel --url http://localhost:{port}",
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            }
+        };
+
+        process.ErrorDataReceived += (s, e) =>
+        {
+            if (string.IsNullOrEmpty(cloudflareUrl) && e.Data != null && e.Data.Contains("trycloudflare.com"))
+            {
+                var parts = e.Data.Split(' ');
+                var rawUrl = parts.FirstOrDefault(p => p.Contains("https://"));
+                if (rawUrl != null) cloudflareUrl = rawUrl.Trim().TrimEnd('/', '|', ' ');
+            }
+        };
+
+        process.Start();
+        process.BeginErrorReadLine();
+        return process;
     }
 
     static Process StartGoHttpServer(string path)
@@ -152,35 +177,6 @@ class VRCVideoStarter
         });
     }
 
-    static Process StartCloudflareTunnel(int port)
-    {
-        var process = new Process
-        {
-            StartInfo = new ProcessStartInfo
-            {
-                FileName = "cloudflared",
-                Arguments = $"tunnel --url http://localhost:{port}",
-                RedirectStandardError = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            }
-        };
-
-        process.ErrorDataReceived += (s, e) =>
-        {
-            if (string.IsNullOrEmpty(cloudflareUrl) && e.Data != null && e.Data.Contains("trycloudflare.com"))
-            {
-                var parts = e.Data.Split(' ');
-                var rawUrl = parts.FirstOrDefault(p => p.Contains("https://"));
-                if (rawUrl != null) cloudflareUrl = rawUrl.Trim().TrimEnd('/', '|', ' ');
-            }
-        };
-
-        process.Start();
-        process.BeginErrorReadLine();
-        return process;
-    }
-
     static void ShowVideoMenu(string path)
     {
         while (true)
@@ -190,17 +186,11 @@ class VRCVideoStarter
             Console.WriteLine("Made By Landmark0920 | Video Mode");
             Console.ResetColor();
             Console.WriteLine("--------------------------------------------------");
-
             var files = Directory.GetFiles(path, "*.mp4");
-            for (int i = 0; i < files.Length; i++)
-            {
-                Console.WriteLine($"{i + 1}: {Path.GetFileName(files[i])}");
-            }
-
-            Console.WriteLine("\n番号を選んでURLをコピー (Qで終了):");
+            for (int i = 0; i < files.Length; i++) Console.WriteLine($"{i + 1}: {Path.GetFileName(files[i])}");
+            Console.WriteLine("\n番号を選んでコピー (Qで終了):");
             var input = Console.ReadLine();
             if (input?.ToLower() == "q") break;
-
             if (int.TryParse(input, out int index) && index > 0 && index <= files.Length)
             {
                 string fileName = Path.GetFileName(files[index - 1]);
@@ -219,13 +209,22 @@ class VRCVideoStarter
 
         if (!CheckCloudflaredInstalled())
         {
+            Console.WriteLine("\n[Setup] cloudflared が見つかりません。セットアップを開始します...");
             using var client = new HttpClient();
             var msiPath = Path.Combine(localAppPath, "setup.msi");
+
+            Console.WriteLine("MSIをダウンロード中...");
             var bytes = await client.GetByteArrayAsync(cloudflaredMsiUrl);
             await File.WriteAllBytesAsync(msiPath, bytes);
-            var psi = new ProcessStartInfo("msiexec.exe", $"/i \"{msiPath}\" /qn") { Verb = "runas" };
-            Process.Start(psi).WaitForExit();
+
+            Console.WriteLine("インストーラーを起動します。インストールを完了させてください。");
+            // /qn を外してインタラクティブに起動
+            var psi = new ProcessStartInfo("msiexec.exe", $"/i \"{msiPath}\"") { UseShellExecute = true, Verb = "runas" };
+            var process = Process.Start(psi);
+            process.WaitForExit();
+
             File.Delete(msiPath);
+            Console.WriteLine("セットアップが完了しました。");
         }
     }
 
@@ -234,7 +233,6 @@ class VRCVideoStarter
         string filePath = Path.Combine(localAppPath, fileName);
         if (!File.Exists(filePath))
         {
-            Console.WriteLine($"{fileName} を準備中...");
             using var client = new HttpClient();
             if (isZip)
             {
@@ -254,9 +252,15 @@ class VRCVideoStarter
 
     static bool CheckCloudflaredInstalled()
     {
+        string prog64 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "cloudflared", "cloudflared.exe");
+        string prog86 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "cloudflared", "cloudflared.exe");
+
+        if (File.Exists(prog64) || File.Exists(prog86)) return true;
+
         try
         {
-            Process.Start(new ProcessStartInfo("cloudflared", "--version") { CreateNoWindow = true, UseShellExecute = false }).WaitForExit();
+            var psi = new ProcessStartInfo("cloudflared", "--version") { CreateNoWindow = true, UseShellExecute = false };
+            Process.Start(psi).WaitForExit();
             return true;
         }
         catch { return false; }
