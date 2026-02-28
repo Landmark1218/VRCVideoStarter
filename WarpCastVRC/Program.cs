@@ -131,7 +131,7 @@ class VRCVideoStarter
             Console.ResetColor();
 
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("注意！動画の名前は全て半角英数字のみにすること！スペースもダメです。");
+            Console.WriteLine("注意！動画を再生する際は必ず動画プレイヤーの再生オプションをUnity Video Playerにしてください");
             Console.ResetColor();
 
             Console.WriteLine("--------------------------------------------------");
