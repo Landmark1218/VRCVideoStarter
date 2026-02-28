@@ -1,0 +1,82 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\mr200\\source\\repos\\WarpCastVRC\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{8ED7EB17-4B5A-40E5-8FFD-99D82AB07D24}|WarpCastVRC\\WarpCastVRC.csproj|c:\\users\\mr200\\source\\repos\\warpcastvrc\\warpcastvrc\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8ED7EB17-4B5A-40E5-8FFD-99D82AB07D24}|WarpCastVRC\\WarpCastVRC.csproj|solutionrelative:warpcastvrc\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\mr200\\AppData\\Local\\Temp\\.vsdbgsrc\\6857fa69d2846d210b8f0370bde521a21392d2729147ef0d998226f697eee59e\\WinFormsOleServices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8ED7EB17-4B5A-40E5-8FFD-99D82AB07D24}|WarpCastVRC\\WarpCastVRC.csproj|c:\\users\\mr200\\source\\repos\\warpcastvrc\\warpcastvrc\\warpcastvrc.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{8ED7EB17-4B5A-40E5-8FFD-99D82AB07D24}|WarpCastVRC\\WarpCastVRC.csproj|solutionrelative:warpcastvrc\\warpcastvrc.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{56df62a4-05a3-4e5b-aa1a-99371ccfb997}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "WinFormsOleServices.cs",
+              "DocumentMoniker": "C:\\Users\\mr200\\AppData\\Local\\Temp\\.vsdbgsrc\\6857fa69d2846d210b8f0370bde521a21392d2729147ef0d998226f697eee59e\\WinFormsOleServices.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\6857fa69d2846d210b8f0370bde521a21392d2729147ef0d998226f697eee59e\\WinFormsOleServices.cs",
+              "ToolTip": "C:\\Users\\mr200\\AppData\\Local\\Temp\\.vsdbgsrc\\6857fa69d2846d210b8f0370bde521a21392d2729147ef0d998226f697eee59e\\WinFormsOleServices.cs [\u8AAD\u307F\u53D6\u308A\u5C02\u7528]",
+              "RelativeToolTip": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\6857fa69d2846d210b8f0370bde521a21392d2729147ef0d998226f697eee59e\\WinFormsOleServices.cs [\u8AAD\u307F\u53D6\u308A\u5C02\u7528]",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAsAAAAAQAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-28T18:23:48.204Z",
+              "EditorCaption": " [\u8AAD\u307F\u53D6\u308A\u5C02\u7528]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "WarpCastVRC",
+              "DocumentMoniker": "C:\\Users\\mr200\\source\\repos\\WarpCastVRC\\WarpCastVRC\\WarpCastVRC.csproj",
+              "RelativeDocumentMoniker": "WarpCastVRC\\WarpCastVRC.csproj",
+              "ToolTip": "C:\\Users\\mr200\\source\\repos\\WarpCastVRC\\WarpCastVRC\\WarpCastVRC.csproj",
+              "RelativeToolTip": "WarpCastVRC\\WarpCastVRC.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-02-28T18:15:43.559Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\mr200\\source\\repos\\WarpCastVRC\\WarpCastVRC\\Program.cs",
+              "RelativeDocumentMoniker": "WarpCastVRC\\Program.cs",
+              "ToolTip": "C:\\Users\\mr200\\source\\repos\\WarpCastVRC\\WarpCastVRC\\Program.cs",
+              "RelativeToolTip": "WarpCastVRC\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-28T18:15:17.198Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
